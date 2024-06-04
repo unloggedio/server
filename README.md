@@ -23,7 +23,7 @@
 
 
 # Unlogged Server
-The unlogged server is a self-hosted service, that can be used with plugin and SDK. Deploy the production service with SDK. The logs for the process will get pushed to the unlogged server. Then the intellij IDEA can download the test candidates, and the production traffic can be replayed. 
+The unlogged server is a self-hosted service, that can be used with plugin and SDK. Deploy the production service with SDK and it will push the logs to unlogged server. Then the intellij IDEA can download the test candidates, and the production traffic can be replayed locally.
 
 <p align="center">
   <img src="static/server_side_data_flow.png" height="400">
@@ -31,14 +31,14 @@ The unlogged server is a self-hosted service, that can be used with plugin and S
 
 
 ## Deployment 
-The server can be deployed using many approaches. Before that a S3 bucket needs to created for storing the logs.
+The server can be deployed using many approaches. A S3 bucket needs to created for storing the logs.
 
 ### Creating a S3 bucket.
 
 - Create a private S3 bucket in AWS.
 - To use the server following environment variables are needed:
-	1. `bucket_name`: Name of s3 bucket
-	2. `bucket_region_url`: This is the URL of s3 region. For example https://s3.eu-west-1.amazonaws.com
+	1. `bucket_name`: Name of the s3 bucket
+	2. `bucket_region_url`: This is the URL of s3 region. For example `https://s3.eu-west-1.amazonaws.com`
 	3. `bucket_region`: This is region of S3 bucket. For example: eu-west-1.
 	4. To get the `access_key` and `secret_key` go to the security credentials of you account and create an access key.
 
@@ -47,6 +47,7 @@ The server can be deployed using many approaches. Before that a S3 bucket needs 
 The server can be deployed using docker or the jar file. It can be done on both a private pc for personal testing and an instance of EC2 with public IP for company wide deployment.
 
 #### Deployment from JAR
+- The jar can be downloaded from [here](https://github.com/unloggedio/server/releases).
 - To deploy the service using jar use the following command:
 
 ```sh
@@ -115,4 +116,4 @@ volumes:
 The unlogged docker image is available on the following registries:
 
 - Amazon ECR: [`public.ecr.aws/z6h2b9v3/unlogged_server`](https://us-east-1.console.aws.amazon.com/ecr/public-registry/repositories?region=us-east-1)
-- Github GHCR: 
+- Github GHCR: [`ghcr.io/unloggedio/unlogged_server:latest`](https://github.com/orgs/unloggedio/packages/container/package/unlogged_server)
