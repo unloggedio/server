@@ -81,7 +81,7 @@ A S3 bucket needs to created for storing the logs.
 
 ### Creating a S3 bucket.
 
-- Create a private S3 bucket in AWS.
+- Create a private S3 bucket in AWS. This step is optional, since the server will create a bucket by itself, if a bucket with the given name in region is not found.
 - To use the server following environment variables are needed:
 	1. `bucket_name`: Name of the s3 bucket
 	2. `bucket_region_url`: This is the URL of s3 region. For example `https://s3.eu-west-1.amazonaws.com`
@@ -166,14 +166,14 @@ The unlogged docker image is available on the following registries:
 
 
 ## Hardware Requirements
-1. The smallest server on AWS that will work with unlogged server is something like `t2.micro`. 
+1. The smallest server on AWS that will work with unlogged server is something like `t2.micro`. It would work with 1 session uploading logs and 5 users concurrently using it.
 It's system requirements are:
 - Number of vCPU: 1
 - Memory: 1 GiB
 - Disk Space: 30 GiB (type gp3)
 - Network Performance: Low to Moderate
 
-2. A recommended system that would work with a higher throughput of logs will be a little larger like `t2.xlarge`.
+2. A recommended system that would work with a higher throughput of logs will be a little larger like `t2.xlarge`. It would work with 4 session uploading logs and 20 users concurrently using it.
 It's system requirements are:
 - Number of vCPU: 4
 - Memory: 16 GiB
