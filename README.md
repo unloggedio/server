@@ -39,42 +39,42 @@ The unlogged server is a self-hosted service, that can be used with plugin and S
 version: '2'
 
 services:
-  	unlogged_server:
-		image: public.ecr.aws/z6h2b9v3/unlogged_server:latest
-		ports:
-			- "8123:8123"
-		environment:
-			- cloud.bucketName=session-logs
-			- cloud.endpoint=http://minio:9000
-			- cloud.aws.region.static=ap-south-1
-			- cloud.aws.credentials.access-key=minio_user
-			- cloud.aws.credentials.secret-key=minio_password
-		networks:
-			- unlogged_network
-		volumes:
-			- unlogged_volume:/usr/src/app/local-session
+  unlogged_server:
+	image: public.ecr.aws/z6h2b9v3/unlogged_server:latest
+	ports:
+	  - "8123:8123"
+	environment:
+	  - cloud.bucketName=session-logs
+	  - cloud.endpoint=http://minio:9000
+	  - cloud.aws.region.static=ap-south-1
+	  - cloud.aws.credentials.access-key=minio_user
+	  - cloud.aws.credentials.secret-key=minio_password
+	networks:
+	  - unlogged_network
+	volumes:
+	  - unlogged_volume:/usr/src/app/local-session
 
-	minio:
-		image: minio/minio
-		container_name: minio
-		ports:
-			- "9000:9000"
-		command: server /data
-		environment:
-			- MINIO_ROOT_USER=minio_user
-			- MINIO_ROOT_PASSWORD=minio_password
-		networks:
-			- unlogged_network
-		volumes:
-			- unlogged_volume:/usr/src/app/local-session
+  minio:
+	image: minio/minio
+	container_name: minio
+	ports:
+	  - "9000:9000"
+	command: server /data
+	environment:
+	  - MINIO_ROOT_USER=minio_user
+	  - MINIO_ROOT_PASSWORD=minio_password
+	networks:
+	  - unlogged_network
+	volumes:
+	  - unlogged_volume:/usr/src/app/local-session
 
 networks:
-  	unlogged_network:
-    	driver: bridge
+  unlogged_network:
+    driver: bridge
 
 volumes:
-  	unlogged_volume:
-    	external: true
+  unlogged_volume:
+    external: true
 ```
 
 ## Deployment with a S3 bucket
