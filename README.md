@@ -29,7 +29,6 @@ The unlogged server is a self-hosted service, that can be used with plugin and S
   <img src="static/server_side_data_flow.png" height="400">
 </p>
 
-
 ## Deployment without a S3 bucket
 
 ### Deployment with a local minio server
@@ -164,3 +163,19 @@ The unlogged docker image is available on the following registries:
 
 - Amazon ECR: [`public.ecr.aws/z6h2b9v3/unlogged_server`](https://us-east-1.console.aws.amazon.com/ecr/public-registry/repositories?region=us-east-1)
 - Github GHCR: [`ghcr.io/unloggedio/unlogged_server:latest`](https://github.com/orgs/unloggedio/packages/container/package/unlogged_server)
+
+
+## Hardware Requirements
+1. The smallest server on AWS that will work with unlogged server is something like `t2.micro`. 
+It's system requirements are:
+- Number of vCPU: 1
+- Memory: 1 GiB
+- Disk Space: 30 GiB (type gp3)
+- Network Performance: Low to Moderate
+
+2. A recommended system that would work with a higher throughput of logs will be a little larger like `t2.xlarge`.
+It's system requirements are:
+- Number of vCPU: 4
+- Memory: 16 GiB
+- Disk Space: 120 GiB (type gp3)
+- Network Performance: Moderate
