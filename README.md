@@ -211,16 +211,12 @@ The unlogged docker image is available on the following registries:
 
 
 ## Hardware Requirements
-1. The smallest server on AWS that will work with unlogged server is something like `t2.micro`. It would work with 1 session uploading logs and 5 users concurrently using it.
-It's system requirements are:
-- Number of vCPU: 1
-- Memory: 1 GiB
-- Disk Space: 30 GiB (type gp3)
-- Network Performance: Low to Moderate
 
-2. A recommended system that would work with a higher throughput of logs will be a little larger like `t2.xlarge`. It would work with 4 session uploading logs and 20 users concurrently using it.
-It's system requirements are:
-- Number of vCPU: 4
-- Memory: 16 GiB
-- Disk Space: 120 GiB (type gp3)
-- Network Performance: Moderate
+Minimum: t2.micro
+Recommanded: t2.xlarge
+
+| Server Type | Number of vCPU | Memory | Disk Space | Network Performance | Concurrent Sessions | Concurrent Users |
+|-------------|----------------|--------|------------|---------------------|---------------------|------------------|
+| t2.micro    | 1              | 1 GiB  | 30 GiB (gp3) | Low to Moderate     | 1                   | 5                |
+| t2.xlarge   | 4              | 16 GiB | 120 GiB (gp3) | Moderate            | 4                   | 20               |
+
