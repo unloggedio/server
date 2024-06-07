@@ -35,20 +35,18 @@ The unlogged server is a self-hosted service, that can be used with plugin and S
 ### Docker Deployment
 - To deploy the server from docker run the following commands:
 
-```sh
+```bash
 # create a docker volume 
 docker volume create unlogged_volume
 
 # run the docker container
-docker run -dp 8123:8123 
--v unlogged_volume:/usr/src/app/local-session 
-public.ecr.aws/z6h2b9v3/unlogged_server:latest
+docker run -dp 8123:8123 -v unlogged_volume:/usr/src/app/local-session public.ecr.aws/z6h2b9v3/unlogged_server:latest
 ```
 
 ### Docker-compose Deployment
 - The server can be deployed using docker compose. An example docker-compose file is as follows:
 
-```sh
+```yaml
 version: '2'
 
 services:
@@ -78,39 +76,39 @@ java -jar unlogged_server.jar
 ### Docker Compose Approach
 
 - The server can be deployed with a minio instance. This is a sample docker-compose file for the same:
-```docker
+```yaml
 version: '2'
 
 services:
   unlogged_server:
-	image: public.ecr.aws/z6h2b9v3/unlogged_server:latest
-	ports:
-	  - "8123:8123"
-	environment:
-	  - spring.profiles.active=minio
-	  - cloud.bucketName=session-logs
-	  - cloud.endpoint=http://minio:9000
-	  - cloud.aws.region.static=ap-south-1
-	  - cloud.aws.credentials.access-key=minio_user
-	  - cloud.aws.credentials.secret-key=minio_password
-	networks:
-	  - unlogged_network
-	volumes:
-	  - unlogged_volume:/usr/src/app/local-session
+    image: public.ecr.aws/z6h2b9v3/unlogged_server:latest
+    ports:
+      - "8123:8123"
+    environment:
+      - spring.profiles.active=minio
+      - cloud.bucketName=session-logs
+      - cloud.endpoint=http://minio:9000
+      - cloud.aws.region.static=ap-south-1
+      - cloud.aws.credentials.access-key=minio_user
+      - cloud.aws.credentials.secret-key=minio_password
+    networks:
+      - unlogged_network
+    volumes:
+      - unlogged_volume:/usr/src/app/local-session
 
   minio:
-	image: minio/minio
-	container_name: minio
-	ports:
-	  - "9000:9000"
-	command: server /data
-	environment:
-	  - MINIO_ROOT_USER=minio_user
-	  - MINIO_ROOT_PASSWORD=minio_password
-	networks:
-	  - unlogged_network
-	volumes:
-	  - unlogged_volume:/usr/src/app/local-session
+    image: minio/minio
+    container_name: minio
+    ports:
+      - "9000:9000"
+    command: server /data
+    environment:
+      - MINIO_ROOT_USER=minio_user
+      - MINIO_ROOT_PASSWORD=minio_password
+    networks:
+      - unlogged_network
+    volumes:
+      - unlogged_volume:/usr/src/app/local-session
 
 networks:
   unlogged_network:
@@ -145,21 +143,21 @@ The server can be deployed using docker or the jar file. It can be done on both 
 docker volume create unlogged_volume
 
 # run the docker container
-docker run -dp 8123:8123 
--v unlogged_volume:/usr/src/app/local-session
--e spring.profiles.active=minio
--e cloud.bucketName=bucket_name
--e cloud.endpoint=bucket_region_url
--e cloud.aws.region.static=bucket_region
--e cloud.aws.credentials.access-key=access_key
--e cloud.aws.credentials.secret-key=secret_key
-public.ecr.aws/z6h2b9v3/unlogged_server:latest
+docker run -dp 8123:8123 \
+  -v unlogged_volume:/usr/src/app/local-session \
+  -e spring.profiles.active=minio \
+  -e cloud.bucketName=bucket_name \
+  -e cloud.endpoint=bucket_region_url \
+  -e cloud.aws.region.static=bucket_region \
+  -e cloud.aws.credentials.access-key=access_key \
+  -e cloud.aws.credentials.secret-key=secret_key \
+  public.ecr.aws/z6h2b9v3/unlogged_server:latest
 ```
 
 #### Docker-compose Deployment
 - The server can be deployed using docker compose. An example docker-compose file is as follows:
 
-```sh
+```yaml
 version: '2'
 
 services:
@@ -170,7 +168,7 @@ services:
     volumes:
       - unlogged_volume:/usr/src/app/local-session
     environment:
-	  - spring.profiles.active=minio
+      - spring.profiles.active=minio
       - cloud.bucketName=bucket_name
       - cloud.endpoint=bucket_region_url
       - cloud.aws.region.static=bucket_region
@@ -189,7 +187,7 @@ volumes:
 - The jar can be downloaded from [here](https://github.com/unloggedio/server/releases).
 - To deploy the service using jar use the following command:
 
-```sh
+```bash
 java -jar -Dspring.profiles.active=minio \
 	-Dcloud.bucketName=bucket_name \
     -Dcloud.endpoint=bucket_region_url \
