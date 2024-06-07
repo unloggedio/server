@@ -212,8 +212,8 @@ The unlogged docker image is available on the following registries:
 
 ## Hardware Requirements
 
-Minimum: t2.micro
-Recommanded: t2.xlarge
+- Minimum: t2.micro
+- Recommanded: t2.xlarge
 
 | Server Type | Number of vCPU | Memory | Disk Space | Network Performance | Concurrent Sessions | Concurrent Users |
 |-------------|----------------|--------|------------|---------------------|---------------------|------------------|
