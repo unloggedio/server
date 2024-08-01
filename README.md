@@ -26,6 +26,10 @@
 
 The unlogged server is a self-hosted service, that can be used with plugin and SDK. Deploy the production service with SDK and it will push the logs to unlogged server. Then the IntelliJ IDEA can download the test candidates, and the production traffic can be replayed locally.
 
+<p align="center">
+  <img src="static/server_side_data_flow.png" height="400">
+</p>
+
 ## Deployment from local file system
 - The server can be deployed without a minio and S3 configuration. All files will be stored in the local file system. 
 
@@ -210,16 +214,11 @@ The unlogged docker image is available on the following registries:
 
 
 ## Hardware Requirements
-1. The smallest server on AWS that will work with unlogged server is something like `t2.micro`. It would work with one session uploading logs and 5 users concurrently using it.
-It's system requirements are:
-	- Number of vCPU: 1
-	- Memory: 1 GiB
-	- Disk Space: 30 GiB (type gp3)
-	- Network Performance: Low to Moderate
 
-2. A recommended system that would work with a higher throughput of logs will be a little larger like `t2.xlarge`. It would work with 4 session uploading logs and 20 users concurrently using it.
-It's system requirements are:
-	- Number of vCPU: 4
-	- Memory: 16 GiB
-	- Disk Space: 120 GiB (type gp3)
-	- Network Performance: Moderate
+- Minimum: t2.micro
+- Recommanded: t2.xlarge
+
+| Server Type | Number of vCPU | Memory | Disk Space | Network Performance | Concurrent Sessions | Concurrent Users |
+|-------------|----------------|--------|------------|---------------------|---------------------|------------------|
+| t2.micro    | 1              | 1 GiB  | 30 GiB (gp3) | Low to Moderate     | 1                   | 5                |
+| t2.xlarge   | 4              | 16 GiB | 120 GiB (gp3) | Moderate            | 4                   | 20               |
