@@ -23,35 +23,34 @@
 
 
 # Unlogged Server
-The unlogged server is a self-hosted service, that can be used with plugin and SDK. Deploy the production service with SDK and it will push the logs to unlogged server. Then the intellij IDEA can download the test candidates, and the production traffic can be replayed locally.
 
-<p align="center">
-  <img src="static/server_side_data_flow.png" height="400">
-</p>
+The unlogged server is a self-hosted service, that can be used with plugin and SDK. Deploy the production service with SDK and it will push the logs to unlogged server. Then the IntelliJ IDEA can download the test candidates, and the production traffic can be replayed locally.
 
-## Deployment from local filesystem
-- The server can be deployed without a minio and S3 configuration. All files will be stored in the local filesystem. 
+## Deployment from local file system
+- The server can be deployed without a minio and S3 configuration. All files will be stored in the local file system. 
 
 ### Docker Deployment
 - To deploy the server from docker run the following commands:
 
-```bash
+```sh
 # create a docker volume 
 docker volume create unlogged_volume
 
 # run the docker container
-docker run -dp 8123:8123 -v unlogged_volume:/usr/src/app/local-session public.ecr.aws/z6h2b9v3/unlogged_server:latest
+docker run -dp 8123:8123 \
+-v unlogged_volume:/usr/src/app/local-session \
+ghcr.io/unloggedio/unlogged_server:latest
 ```
 
 ### Docker-compose Deployment
 - The server can be deployed using docker compose. An example docker-compose file is as follows:
 
-```yaml
+```sh
 version: '2'
 
 services:
   unlogged_server:
-    image: public.ecr.aws/z6h2b9v3/unlogged_server:latest
+    image: ghcr.io/unloggedio/unlogged_server:latest
     ports:
       - "8123:8123"
     volumes:
@@ -66,6 +65,7 @@ volumes:
 - Run the container using `docker compose -f path_to_file up -d`
 
 ### Jar Deployment
+- The jar can be downloaded from [here](https://github.com/unloggedio/server/releases).
 - The command to run from JAR is:
 ```bash
 java -jar unlogged_server.jar
@@ -76,39 +76,39 @@ java -jar unlogged_server.jar
 ### Docker Compose Approach
 
 - The server can be deployed with a minio instance. This is a sample docker-compose file for the same:
-```yaml
+```docker
 version: '2'
 
 services:
   unlogged_server:
-    image: public.ecr.aws/z6h2b9v3/unlogged_server:latest
-    ports:
-      - "8123:8123"
-    environment:
-      - spring.profiles.active=minio
-      - cloud.bucketName=session-logs
-      - cloud.endpoint=http://minio:9000
-      - cloud.aws.region.static=ap-south-1
-      - cloud.aws.credentials.access-key=minio_user
-      - cloud.aws.credentials.secret-key=minio_password
-    networks:
-      - unlogged_network
-    volumes:
-      - unlogged_volume:/usr/src/app/local-session
+	image: ghcr.io/unloggedio/unlogged_server:latest
+	ports:
+	  - "8123:8123"
+	environment:
+	  - spring.profiles.active=minio
+	  - cloud.bucketName=session-logs
+	  - cloud.endpoint=http://minio:9000
+	  - cloud.aws.region.static=ap-south-1
+	  - cloud.aws.credentials.access-key=minio_user
+	  - cloud.aws.credentials.secret-key=minio_password
+	networks:
+	  - unlogged_network
+	volumes:
+	  - unlogged_volume:/usr/src/app/local-session
 
   minio:
-    image: minio/minio
-    container_name: minio
-    ports:
-      - "9000:9000"
-    command: server /data
-    environment:
-      - MINIO_ROOT_USER=minio_user
-      - MINIO_ROOT_PASSWORD=minio_password
-    networks:
-      - unlogged_network
-    volumes:
-      - unlogged_volume:/usr/src/app/local-session
+	image: minio/minio
+	container_name: minio
+	ports:
+	  - "9000:9000"
+	command: server /data
+	environment:
+	  - MINIO_ROOT_USER=minio_user
+	  - MINIO_ROOT_PASSWORD=minio_password
+	networks:
+	  - unlogged_network
+	volumes:
+	  - unlogged_volume:/usr/src/app/local-session
 
 networks:
   unlogged_network:
@@ -143,32 +143,32 @@ The server can be deployed using docker or the jar file. It can be done on both 
 docker volume create unlogged_volume
 
 # run the docker container
-docker run -dp 8123:8123 \
-  -v unlogged_volume:/usr/src/app/local-session \
-  -e spring.profiles.active=minio \
-  -e cloud.bucketName=bucket_name \
-  -e cloud.endpoint=bucket_region_url \
-  -e cloud.aws.region.static=bucket_region \
-  -e cloud.aws.credentials.access-key=access_key \
-  -e cloud.aws.credentials.secret-key=secret_key \
-  public.ecr.aws/z6h2b9v3/unlogged_server:latest
+docker run -dp 8123:8123 
+-v unlogged_volume:/usr/src/app/local-session
+-e spring.profiles.active=minio
+-e cloud.bucketName=bucket_name
+-e cloud.endpoint=bucket_region_url
+-e cloud.aws.region.static=bucket_region
+-e cloud.aws.credentials.access-key=access_key
+-e cloud.aws.credentials.secret-key=secret_key
+ghcr.io/unloggedio/unlogged_server:latest
 ```
 
 #### Docker-compose Deployment
 - The server can be deployed using docker compose. An example docker-compose file is as follows:
 
-```yaml
+```sh
 version: '2'
 
 services:
   unlogged_server:
-    image: public.ecr.aws/z6h2b9v3/unlogged_server:latest
+    image: ghcr.io/unloggedio/unlogged_server:latest
     ports:
       - "8123:8123"
     volumes:
       - unlogged_volume:/usr/src/app/local-session
     environment:
-      - spring.profiles.active=minio
+	  - spring.profiles.active=minio
       - cloud.bucketName=bucket_name
       - cloud.endpoint=bucket_region_url
       - cloud.aws.region.static=bucket_region
@@ -187,7 +187,7 @@ volumes:
 - The jar can be downloaded from [here](https://github.com/unloggedio/server/releases).
 - To deploy the service using jar use the following command:
 
-```bash
+```sh
 java -jar -Dspring.profiles.active=minio \
 	-Dcloud.bucketName=bucket_name \
     -Dcloud.endpoint=bucket_region_url \
@@ -206,17 +206,20 @@ java -jar -Dspring.profiles.active=minio \
 ## Docker Registries
 The unlogged docker image is available on the following registries:
 
-- Amazon ECR: [`public.ecr.aws/z6h2b9v3/unlogged_server`](https://us-east-1.console.aws.amazon.com/ecr/public-registry/repositories?region=us-east-1)
 - Github GHCR: [`ghcr.io/unloggedio/unlogged_server:latest`](https://github.com/orgs/unloggedio/packages/container/package/unlogged_server)
 
 
 ## Hardware Requirements
+1. The smallest server on AWS that will work with unlogged server is something like `t2.micro`. It would work with one session uploading logs and 5 users concurrently using it.
+It's system requirements are:
+	- Number of vCPU: 1
+	- Memory: 1 GiB
+	- Disk Space: 30 GiB (type gp3)
+	- Network Performance: Low to Moderate
 
-- Minimum: t2.micro
-- Recommanded: t2.xlarge
-
-| Server Type | Number of vCPU | Memory | Disk Space | Network Performance | Concurrent Sessions | Concurrent Users |
-|-------------|----------------|--------|------------|---------------------|---------------------|------------------|
-| t2.micro    | 1              | 1 GiB  | 30 GiB (gp3) | Low to Moderate     | 1                   | 5                |
-| t2.xlarge   | 4              | 16 GiB | 120 GiB (gp3) | Moderate            | 4                   | 20               |
-
+2. A recommended system that would work with a higher throughput of logs will be a little larger like `t2.xlarge`. It would work with 4 session uploading logs and 20 users concurrently using it.
+It's system requirements are:
+	- Number of vCPU: 4
+	- Memory: 16 GiB
+	- Disk Space: 120 GiB (type gp3)
+	- Network Performance: Moderate
